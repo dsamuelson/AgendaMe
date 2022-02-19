@@ -1,13 +1,56 @@
 var toDay = moment()._d;
 var saveText;
-//const hoursToDay = $(".time-block");
+var eventsSoFar = {};
 
 $("#currentDay").text(moment(toDay).format('dddd, MMM DD YYYY'));
+
+//set up the initial time/date for today then check every hour to see if the date has changed just in case they leave the tab opened
 
 setInterval(function() {
     var toDay = moment()._d;
     $("#currentDay").text(moment(toDay).format('dddd, MMM DD YYYY'));
 }, (((1000 * 60) * 60)));
+
+
+//set up time interval so that the colors of the tasks will change when certain times pass
+
+//console.log(moment(moment()._d).format('HH'));
+
+//save events into localStorage
+
+let saveEvents = function() {
+    var eventsToday = $(".event-box");
+    var saveEventsToday = {
+        nineAM: eventsToday[0].children[0].innerText,
+        tenAM: eventsToday[1].children[0].innerText,
+        elevenAM: eventsToday[2].children[0].innerText,
+        twelvePM: eventsToday[3].children[0].innerText,
+        onePM: eventsToday[4].children[0].innerText,
+        twoPM: eventsToday[5].children[0].innerText,
+        threePM: eventsToday[6].children[0].innerText,
+        fourPM: eventsToday[7].children[0].innerText,
+        fivePM: eventsToday[8].children[0].innerText,
+    };
+    localStorage.setItem("events", JSON.stringify(saveEventsToday));
+};
+
+// Load events from localStorage and put the text into their appropriate boxes
+
+let loadEvents = function() {
+    eventsSoFar = JSON.parse(localStorage.getItem("events"));
+    var eventsToday = $(".event-box");
+    eventsToday[0].children[0].innerText = eventsSoFar.nineAM;
+    eventsToday[1].children[0].innerText = eventsSoFar.tenAM;
+    eventsToday[2].children[0].innerText = eventsSoFar.elevenAM;
+    eventsToday[3].children[0].innerText = eventsSoFar.twelvePM;
+    eventsToday[4].children[0].innerText = eventsSoFar.onePM;
+    eventsToday[5].children[0].innerText = eventsSoFar.twoPM;
+    eventsToday[6].children[0].innerText = eventsSoFar.threePM;
+    eventsToday[7].children[0].innerText = eventsSoFar.fourPM;
+    eventsToday[8].children[0].innerText = eventsSoFar.fivePM;
+};
+
+//make text area appear when the event box next to the desired time is pressed
 
 $(".time-blocks-container").on("click", ".event-box", function(){
     var text = $(this)
@@ -24,6 +67,8 @@ $(".time-blocks-container").on("click", ".event-box", function(){
     textInput.trigger("focus");
 });
 
+// make it so that when you press on the save box it saves the content of the text area to the time slot
+
 $(".time-blocks-container").on("click", ".save-Box", function () {
     var text = $(this)
         .prev(".event-Input")
@@ -38,11 +83,13 @@ $(".time-blocks-container").on("click", ".save-Box", function () {
     eventDiv.append(eventP);
     saveText = text;
     $(this).prev(".event-Input").replaceWith(eventDiv);
+    saveEvents();
 });
+
+// If you click outside but not on the save button the box the text will revert back to its original value
 
 $(".time-blocks-container").on("blur", "textarea", function(){
     var isHovered = $(this).next(".save-Box").is(":hover");
-    console.log(isHovered);
     if (!isHovered){
         var text = saveText;
 
@@ -57,3 +104,7 @@ $(".time-blocks-container").on("blur", "textarea", function(){
         $(this).replaceWith(eventDiv);
     }
 });
+
+//load events when page opens
+
+loadEvents();

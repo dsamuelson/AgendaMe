@@ -1,4 +1,5 @@
 var toDay = moment()._d;
+var saveText;
 //const hoursToDay = $(".time-block");
 
 $("#currentDay").text(moment(toDay).format('dddd, MMM DD YYYY'));
@@ -12,6 +13,8 @@ $(".time-blocks-container").on("click", ".event-box", function(){
     var text = $(this)
         .text()
         .trim();
+    
+    saveText = text;
 
     var textInput = $("<textarea>")
         .addClass("form-control event-Input")
@@ -25,8 +28,6 @@ $(".time-blocks-container").on("click", ".save-Box", function () {
     var text = $(this)
         .prev(".event-Input")
         .val();
-
-    console.dir(text);
     
     var eventDiv = $("<div>")
         .addClass("event-box col-10 border border-secondary flex-fill d-flex justify-content-left pt-2 align-items-center");
@@ -35,10 +36,24 @@ $(".time-blocks-container").on("click", ".save-Box", function () {
         .text(text);
     
     eventDiv.append(eventP);
-    
+    saveText = text;
     $(this).prev(".event-Input").replaceWith(eventDiv);
 });
 
 $(".time-blocks-container").on("blur", "textarea", function(){
-    
+    var isHovered = $(this).next(".save-Box").is(":hover");
+    console.log(isHovered);
+    if (!isHovered){
+        var text = saveText;
+
+        var eventDiv = $("<div>")
+            .addClass("event-box col-10 border border-secondary flex-fill d-flex justify-content-left pt-2 align-items-center");
+
+        var eventP = $("<p>")
+            .text(text);
+        
+        eventDiv.append(eventP);
+        
+        $(this).replaceWith(eventDiv);
+    }
 });

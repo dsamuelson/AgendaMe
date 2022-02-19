@@ -14,7 +14,39 @@ setInterval(function() {
 
 //set up time interval so that the colors of the tasks will change when certain times pass
 
-//console.log(moment(moment()._d).format('HH'));
+let colorTimeSlots = function(){
+    //get current time formatted for the current hour
+
+    var currTime = moment(moment()._d).format('HH');
+    var colorTime = $(".time-block");
+    console.log(currTime);
+
+    //set up event boxes to compare to current time 
+    
+    colorTime.each(function(){
+        let myTimeValue = $(this).data("time");
+        var thisTimeSlot = $(this).children(".event-box")
+        if (currTime == myTimeValue) {
+            thisTimeSlot.addClass("present");
+            thisTimeSlot.removeClass("past");
+            thisTimeSlot.removeClass("future");
+
+        } else if (currTime > myTimeValue) {
+            thisTimeSlot.addClass("past");
+            thisTimeSlot.removeClass("present");
+            thisTimeSlot.removeClass("future")
+
+        } else if (currTime < myTimeValue) {
+            thisTimeSlot.addClass("future");
+            thisTimeSlot.removeClass("past");
+            thisTimeSlot.removeClass("present");
+        }
+    });
+};
+
+setInterval(function(){
+    colorTimeSlots();
+}, (1000 * 60));
 
 //save events into localStorage
 
@@ -32,6 +64,7 @@ let saveEvents = function() {
         fivePM: eventsToday[8].children[0].innerText,
     };
     localStorage.setItem("events", JSON.stringify(saveEventsToday));
+    colorTimeSlots();
 };
 
 // Load events from localStorage and put the text into their appropriate boxes
@@ -103,8 +136,10 @@ $(".time-blocks-container").on("blur", "textarea", function(){
         
         $(this).replaceWith(eventDiv);
     }
+    colorTimeSlots();
 });
 
 //load events when page opens
 
 loadEvents();
+colorTimeSlots();

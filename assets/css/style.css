@@ -67,3 +67,7 @@ textarea{
 .border-secondary {
   border-color: black!important;
 }
+
+.clear-btn {
+  line-height: 1.5;
+}

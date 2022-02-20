@@ -71,6 +71,9 @@ let saveEvents = function() {
 
 let loadEvents = function() {
     eventsSoFar = JSON.parse(localStorage.getItem("events"));
+    if (!eventsSoFar){
+        saveEvents();
+    } else {
     var eventsToday = $(".event-box");
     eventsToday[0].children[0].innerText = eventsSoFar.nineAM;
     eventsToday[1].children[0].innerText = eventsSoFar.tenAM;
@@ -81,6 +84,7 @@ let loadEvents = function() {
     eventsToday[6].children[0].innerText = eventsSoFar.threePM;
     eventsToday[7].children[0].innerText = eventsSoFar.fourPM;
     eventsToday[8].children[0].innerText = eventsSoFar.fivePM;
+    }
 };
 
 //make text area appear when the event box next to the desired time is pressed
@@ -138,6 +142,24 @@ $(".time-blocks-container").on("blur", "textarea", function(){
     }
     colorTimeSlots();
 });
+
+let deleteAll = function() {
+    var clearEventsToday = {
+        nineAM: "",
+        tenAM: "",
+        elevenAM: "",
+        twelvePM: "",
+        onePM: "",
+        twoPM: "",
+        threePM: "",
+        fourPM: "",
+        fivePM:""
+    };
+    localStorage.setItem("events", JSON.stringify(clearEventsToday));
+    loadEvents();
+};
+
+$("#clear-day").click(function () {deleteAll()});
 
 //load events when page opens
 

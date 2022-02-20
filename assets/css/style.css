@@ -25,6 +25,8 @@ textarea{
   white-space: pre-wrap;
 }
 
+/* time segments styling */
+
 .time-block{
   text-align: center;
   border-radius: 15px;
@@ -47,6 +49,8 @@ textarea{
   color: rgb(77, 128, 128);
 }
 
+/* styling for time indicator */
+
 .present {
   background-color: #ff6961;
   color: white;
@@ -63,6 +67,8 @@ textarea{
   background-color: darkblue!important;
   transition: all .3s ease-in-out;
 }
+
+/* overwriting some bootstrap classes to fit the need */
 
 .border-secondary {
   border-color: black!important;

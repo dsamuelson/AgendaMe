@@ -19,7 +19,6 @@ let colorTimeSlots = function(){
 
     var currTime = moment(moment()._d).format('HH');
     var colorTime = $(".time-block");
-    console.log(currTime);
 
     //set up event boxes to compare to current time 
     
@@ -143,6 +142,8 @@ $(".time-blocks-container").on("blur", "textarea", function(){
     colorTimeSlots();
 });
 
+// add a delete all button so that you can choose if you want to clear previous events
+
 let deleteAll = function() {
     var clearEventsToday = {
         nineAM: "",
@@ -159,9 +160,11 @@ let deleteAll = function() {
     loadEvents();
 };
 
+// add delete function to delete button
+
 $("#clear-day").click(function () {deleteAll()});
 
-//load events when page opens
+//load events and color time when page opens
 
 loadEvents();
 colorTimeSlots();
